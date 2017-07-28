@@ -1,9 +1,6 @@
-var keystone = require('keystone');
-type Test = {
-	name: string,
-};
-const a: Test = { name: 'bob' };
-console.log(a);
+const keystone = require('keystone');
+const slackbot = require('./slackbot');
+
 keystone.init({
 	'cookie secret': 'secure string goes here',
 	name: 'coffee-bot',
@@ -17,4 +14,10 @@ keystone.import('models');
 
 keystone.set('routes', require('./routes'));
 
-keystone.start();
+keystone.start(err => {
+	if (err) {
+		console.error(err);
+		return process.exit(1);
+	}
+	slackbot();
+});
