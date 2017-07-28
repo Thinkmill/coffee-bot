@@ -5,7 +5,5 @@ logs
 node_modules
 
 .env
-
-yarn.lock
 lib/
 lib/*
