@@ -1,13 +1,15 @@
-var slack = require('slack');
-var bot = slack.rtm.client();
-var token = process.env.SLACK_TOKEN;
+const slack = require('slack');
+const bot = slack.rtm.client();
+const token = process.env.SLACK_TOKEN;
+const languageParser = require('./languageParser');
 
 module.exports = () => {
-	bot.message(message => {
+	bot.message(async message => {
 		console.log('message', message);
 		if (message.subtype !== 'bot_message') {
+			const returnMessage = await languageParser(message);
 			slack.chat.postMessage(
-				{ text: 'hi', channel: message.channel, token },
+				{ text: returnMessage, channel: message.channel, token },
 				console.log
 			);
 		}

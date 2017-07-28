@@ -1,15 +1,16 @@
-var keystone = require('keystone');
-
-var User = new keystone.List('User');
+const keystone = require('keystone');
+const Types = keystone.Field.Types;
+const User = new keystone.List('User');
 
 User.add({
-	email: { type: keystone.Field.Types.Email },
-	password: { type: keystone.Field.Types.Password },
+	email: { type: Types.Email },
+	password: { type: Types.Password },
+	slackId: { type: String, unique: true },
 });
 
 User.schema.virtual('canAccessKeystone').get(function() {
 	return true;
 });
 
-User.defaultColumns = 'displayName, email';
+User.defaultColumns = 'slackId, email';
 User.register();

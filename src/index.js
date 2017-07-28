@@ -1,5 +1,4 @@
 const keystone = require('keystone');
-const slackbot = require('./slackbot');
 
 keystone.init({
 	'cookie secret': 'secure string goes here',
@@ -16,6 +15,8 @@ keystone.import('models');
 keystone.set('routes', require('./routes'));
 
 keystone.start(err => {
+	// importing here to come after models are imported...
+	const slackbot = require('./slackbot');
 	if (err) {
 		console.error(err);
 		return process.exit(1);
