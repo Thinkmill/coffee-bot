@@ -42,7 +42,8 @@ const addCoffee = async (orderingUser, name, channelId) => {
 		Run.model.findOne({ channelId, openRun: true }).populate('location'),
 	]);
 
-	const [item, user, run] = information;
+	let [item, user, run] = information;
+	if (!user) user = await new User.model({ slackId: orderingUser }).save();
 	if (!item) return 'I do not know what that is, ask a dev to add it.';
 	if (!run) return 'There is no current run.';
 	const orderItem = new OrderItem.model({
