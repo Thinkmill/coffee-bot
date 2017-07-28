@@ -20,5 +20,7 @@ keystone.start(err => {
 		console.error(err);
 		return process.exit(1);
 	}
-	slackbot();
+	if (!process.env.OFF) {
+		slackbot();
+	}
 });
