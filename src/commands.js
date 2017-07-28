@@ -32,6 +32,15 @@ const beginRun = async (runningUser, name, channelId) => {
 	return `new run created for ${name}`;
 };
 
+const addNewLocation = async name => {
+	const location = await Location.model.findOne({ name: name });
+
+	if (location) return 'this place already exists! No sweat, just start a run.';
+	const newLocation = new Location.model({ name });
+	await newLocation.save();
+	return `added new location: ${name}`;
+};
+
 // when there is an open channel
 // /coffee :itemName
 const addCoffee = async (orderingUser, name, channelId) => {
@@ -134,6 +143,7 @@ module.exports = {
 	addCoffee,
 	closeRun,
 	// showBalance,
+	addNewLocation,
 	addNewItem,
 };
 
