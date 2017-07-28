@@ -7,7 +7,7 @@ User.add({
 	password: { type: keystone.Field.Types.Password },
 });
 
-User.schema.virtual('canAccessKeystone').get(function () {
+User.schema.virtual('canAccessKeystone').get(function() {
 	return true;
 });
 

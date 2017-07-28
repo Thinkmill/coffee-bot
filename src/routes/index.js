@@ -5,6 +5,6 @@ var routes = {
 	views: importRoutes('./views'),
 };
 
-exports = module.exports = function (app) {
-	app.get('/', routes.views.index)
+exports = module.exports = function(app) {
+	app.get('/', routes.views.index);
 };
