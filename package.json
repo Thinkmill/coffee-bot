@@ -19,7 +19,7 @@
 		"lint": "eslint .",
 		"build": "babel src -d lib --copyfiles",
 		"precommit": "lint-staged",
-		"start": "cd lib && node index.js",
+		"start": "node index.js",
 		"prettier": "prettier --single-quote --trailing-comma es5 --use-tabs --write"
 	},
 	"lint-staged": {
