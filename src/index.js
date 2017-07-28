@@ -15,6 +15,12 @@ keystone.import('models');
 keystone.set('routes', require('./routes'));
 
 keystone.start(err => {
+	if (process.env.DROP_DB_ON_START) {
+		var mongoose = require('mongoose');
+		/* Connect to the DB */
+		mongoose.connection.dropDatabase();
+		return process.exit(1); // trigger heroku dyno restart
+	}
 	// importing here to come after models are imported...
 	const slackbot = require('./slackbot');
 	if (err) {
