@@ -7,6 +7,7 @@ keystone.init({
 	'user model': 'User',
 	'auto update': true,
 	auth: true,
+	mongo: process.env.MONGO_URI,
 	port: process.env.PORT,
 });
 
