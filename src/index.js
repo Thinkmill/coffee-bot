@@ -1,5 +1,12 @@
 const keystone = require('keystone');
-
+if (process.env.DROP_DB_ON_START) {
+	var mongoose = require('mongoose');
+	/* Connect to the DB */
+	mongoose.connect(process.env.MONGO_URI, function() {
+		/* Drop the DB */
+		mongoose.connection.db.dropDatabase();
+	});
+}
 keystone.init({
 	'cookie secret': 'secure string goes here',
 	name: 'coffee-bot',
