@@ -8,10 +8,12 @@ module.exports = () => {
 		console.log('message', message);
 		if (message.subtype !== 'bot_message') {
 			const returnMessage = await languageParser(message);
-			slack.chat.postMessage(
-				{ text: returnMessage, channel: message.channel, token },
-				console.log
-			);
+			if (returnMessage) {
+				slack.chat.postMessage(
+					{ text: returnMessage, channel: message.channel, token },
+					console.log
+				);
+			}
 		}
 	});
 

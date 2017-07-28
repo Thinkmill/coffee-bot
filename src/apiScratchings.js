@@ -6,6 +6,10 @@ const Item = keystone.list('Item');
 const OrderItem = keystone.list('OrderItem');
 const Run = keystone.list('Run');
 
+const slack = require('slack');
+const util = require('util');
+const token = process.env.SLACK_TOKEN;
+const getUserFromSlack = util.promisify(slack.users.info);
 // Start a run
 // called by /coffee run :placeName
 const beginRun = async (runningUser, name, channelId) => {
@@ -53,6 +57,17 @@ const addCoffee = async (orderingUser, name, channelId) => {
 // Add coffee to a run
 // Add new item
 
+const getUserNameFromSlack = async item => {
+	const slackInfo = await getUserFromSlack({ token, user: item.user.slackId });
+	return `@${slackInfo.user.name} - ${item.item.name} - ${process.env
+		.CURRENCY_SYMBOL}${item.item.price / 100}.`;
+};
+
+const closeTemplate = (
+	locationName,
+	orders
+) => `run closed for ${locationName}. Orders were:
+${orders.join('\n')}`;
 // Close a run
 // There is an open run and I want to close it
 // /coffee closeRun
@@ -62,7 +77,12 @@ const closeRun = async channelId => {
 		.populate('location');
 	run.openRun = false;
 	await run.save();
-	return `run closed for ${run.location.name}`;
+	const items = await OrderItem.model
+		.find({ run: run.id })
+		.populate('item user');
+	console.log('ITEMS', items);
+	const orders = await Promise.all(items.map(getUserNameFromSlack));
+	return closeTemplate(run.location.name, orders);
 	// WHEN THE RUN IS CLOSED, PRINT OUT ALL ORDERS IN THE RUN
 };
 // Get balances
