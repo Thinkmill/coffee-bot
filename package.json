@@ -1,8 +1,8 @@
 {
-	"name": "minimum-viable-keystone",
+	"name": "coffee-bot",
 	"version": "1.0.0",
-	"description": "The minimum file structure you need for a keystone app",
-	"main": "keystone.js",
+	"description": "coffee-bot",
+	"main": "index.js",
 	"dependencies": {
 		"babel-cli": "^6.24.1",
 		"babel-eslint": "^7.2.3",
