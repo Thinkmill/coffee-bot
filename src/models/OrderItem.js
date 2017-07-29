@@ -5,7 +5,8 @@ const OrderItem = new keystone.List('OrderItem');
 
 OrderItem.add({
 	run: { type: Types.Relationship, ref: 'Run' },
-	user: { type: Types.Relationship, ref: 'User' },
+	orderingUser: { type: Types.Relationship, ref: 'User' },
+	runningUser: { type: Types.Relationship, ref: 'User' },
 	item: { type: Types.Relationship, ref: 'Item' },
 });
 

@@ -1,7 +1,11 @@
+// TODO: These should go in the DB probably.
+// Complicate items to have aliases, fill out common aliases automagically
+// Allow a location to be instantiated with a base set of things (even without prices)
+// Allow pricing with add, separate adding an item so it can be done anytime
+// Start aliasing commands
 const getItems = message => {
 	let returnValue = [];
 
-	// TODO: These should go in the DB probably.
 	let items = [
 		'latte',
 		'cappuccino',
