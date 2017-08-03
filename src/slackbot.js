@@ -6,8 +6,8 @@ const plugins = [
 	require('./plugins/AddNewLocation'),
 	require('./plugins/BeginRun'),
 	require('./plugins/CloseRun'),
-	require('./plugins/ShowBalance'),
-	require('./plugins/DisplayCurrentRun'),
+	// require('./plugins/ShowBalance'),
+	// require('./plugins/DisplayCurrentRun'),
 ];
 const Help = require('./plugins/Help');
 
