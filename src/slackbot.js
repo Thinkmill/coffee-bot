@@ -3,8 +3,8 @@ const bot = slack.rtm.client();
 const token = process.env.SLACK_TOKEN;
 const plugins = [
 	require('./plugins/OrderAnItem'),
-	require('./plugins/addNewLocation'),
-	require('./plugins/beginRun'),
+	require('./plugins/AddNewLocation'),
+	require('./plugins/BeginRun'),
 	require('./plugins/CloseRun'),
 	require('./plugins/ShowBalance'),
 	require('./plugins/DisplayCurrentRun'),
