@@ -7,15 +7,12 @@ const Plugin = require('../Plugin');
 class BeginRun extends Plugin {
 	constructor(message) {
 		super(message);
-		this.testRegex = /^open run:? /i;
-	}
-
-	getLocationName() {
-		return this.text.replace(this.testRegex, '');
+		this.testRegex = /^open run:? (.*)/i;
+		this.name = 'Start Run';
 	}
 
 	async action() {
-		const name = this.getLocationName();
+		const name = this.text.match(this.testRegex)[1];
 		const information = await Promise.all([
 			Location.model.findOne({ name: name }),
 			User.model.findOne({ slackId: this.userId }),

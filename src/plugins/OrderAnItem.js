@@ -8,6 +8,7 @@ class OrderAnItem extends Plugin {
 	constructor(message) {
 		super(message);
 		this.testRegex = /^add ((.*) for \$(\d+\.\d\d))?/i;
+		this.name = 'Order Item';
 	}
 
 	getName() {
@@ -33,11 +34,9 @@ class OrderAnItem extends Plugin {
 			const createdItem = await createItem(newItemDetails, run.location.id);
 			if (createdItem && createdItem.message) return createdItem.message;
 			name = newItemDetails.name;
-			console.log('Finished creating our new item');
 		}
 		// Core business logic moved to being a util, so that we can compose creating
 		// and ordering items as we see fit
-		console.log('Now we can add an item');
 		return await orderAnItem(name, this.slackId, this.channelId);
 	}
 }

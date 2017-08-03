@@ -5,15 +5,12 @@ const Plugin = require('../Plugin');
 class AddNewLocation extends Plugin {
 	constructor(message) {
 		super(message);
-		this.testRegex = /^new place:? /i;
-	}
-
-	getNewLocationName() {
-		return this.text.replace(this.testRegex, '').trim();
+		this.testRegex = /^new place:? (.*)/i;
+		this.name = 'Add New Location';
 	}
 
 	async action() {
-		const name = this.getNewLocationName();
+		const name = this.text.match(this.testRegex)[1].trim();
 		const location = await Location.model.findOne({ name: name });
 
 		if (location)

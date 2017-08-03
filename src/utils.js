@@ -3,6 +3,51 @@ const User = keystone.list('User');
 const Item = keystone.list('Item');
 const OrderItem = keystone.list('OrderItem');
 const Run = keystone.list('Run');
+const slack = require('slack');
+const util = require('util');
+const token = process.env.SLACK_TOKEN;
+const getUserFromSlack = util.promisify(slack.users.info);
+
+const findLocationFromName = async name => {
+	const locations = await Location.find({
+		or: [{ name }, { alias: { $includes: name } }],
+	});
+	if (location.length > 1)
+		throw new Error({
+			message: `More than one location for ${name}`,
+			locations,
+		});
+	return locations[0];
+};
+
+const findItemFromName = async (name, locationId) => {
+	const items = await Location.find({
+		or: [
+			{ name, location: locationId },
+			{ alias: { $includes: name }, location: locationId },
+		],
+	});
+	if (location.length > 1)
+		throw new Error({
+			message: `More than one item of ${name} at this location`,
+			items,
+		});
+	return items[0];
+};
+
+const getUserNameFromSlack = async slackId => {
+	const slackInfo = await getUserFromSlack({ token, user: slackId });
+	return slackInfo.user.name;
+};
+
+const displayBalance = ({ name, price }, slackName) => {
+	return `@${slackName} - ${name} - ${priceToDollars(price)}.`;
+};
+
+const getUserNameAndBalanceString = async item => {
+	const slackName = await getUserNameFromSlack(item.orderingUser.slackId);
+	return displayBalance(item.item, slackName);
+};
 
 const priceToDollars = priceInCents => {
 	const divided = priceInCents / 100;
@@ -56,4 +101,9 @@ const orderAnItem = async (name, slackId, channelId) => {
 module.exports = {
 	createItem,
 	orderAnItem,
+	getUserNameFromSlack,
+	priceToDollars,
+	getUserNameAndBalanceString,
+	findLocationFromName,
+	findItemFromName,
 };

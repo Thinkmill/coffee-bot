@@ -3,24 +3,13 @@ const bot = slack.rtm.client();
 const token = process.env.SLACK_TOKEN;
 const plugins = [
 	require('./plugins/OrderAnItem'),
-	// require('./plugins/AddNewItem'),
 	require('./plugins/addNewLocation'),
 	require('./plugins/beginRun'),
 	require('./plugins/CloseRun'),
+	require('./plugins/ShowBalance'),
+	require('./plugins/DisplayCurrentRun'),
 ];
 const Help = require('./plugins/Help');
-
-const runPlugin = async plugin => {
-	if (plugin.test()) {
-		const returnMessage = await plugin.action();
-		if (returnMessage) {
-			slack.chat.postMessage(
-				{ text: returnMessage, channel: plugin.channelId, token },
-				console.log
-			);
-		}
-	}
-};
 
 module.exports = () => {
 	bot.message(async message => {
@@ -31,7 +20,7 @@ module.exports = () => {
 			const withHelpPlugin = instantiatedPlugins.concat(
 				new Help(message, instantiatedPlugins)
 			);
-			withHelpPlugin.map(runPlugin);
+			withHelpPlugin.map(plugin => plugin.run());
 		}
 	});
 	// start listening to the slack team associated to the token
