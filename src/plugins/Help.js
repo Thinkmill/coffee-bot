@@ -1,10 +1,11 @@
 const Plugin = require('../Plugin');
 
-const commandHelpTemplate = plugin =>
-	plugin.testRegex
+const commandHelpTemplate = plugin => {
+	console.log(plugin);
+	return plugin.testRegex
 		? `${plugin.name}: ${plugin.testRegex.toString()}: ${plugin.explanation}\n`
 		: `I have no test regex for ${plugin.name}! You should talk to your friendly dev about that.`;
-
+};
 class Help extends Plugin {
 	constructor(message, plugins) {
 		super(message);

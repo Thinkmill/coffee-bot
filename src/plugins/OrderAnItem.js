@@ -37,7 +37,7 @@ class OrderAnItem extends Plugin {
 		}
 		// Core business logic moved to being a util, so that we can compose creating
 		// and ordering items as we see fit
-		return await orderAnItem(name, this.slackId, this.channelId);
+		return await orderAnItem(name, this.userId, this.channelId);
 	}
 }
 

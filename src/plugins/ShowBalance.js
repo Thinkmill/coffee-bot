@@ -13,7 +13,7 @@ class ShowBalance extends Plugin {
 	}
 
 	async action() {
-		const user = await User.model.findOne({ slackId: this.slackId });
+		const user = await User.model.findOne({ slackId: this.userId });
 		const information = await Promise.all([
 			OrderItem.model
 				.find({ runningUser: user.id })

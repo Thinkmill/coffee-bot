@@ -6,7 +6,10 @@ const Run = keystone.list('Run');
 const slack = require('slack');
 const util = require('util');
 const token = process.env.SLACK_TOKEN;
-const getUserFromSlack = util.promisify(slack.users.info);
+const skipSlack = process.env.SKIP_SLACK;
+const getUserFromSlack = skipSlack
+	? ({ user }) => ({ user: { name: user } })
+	: util.promisify(slack.users.info);
 
 const findLocationFromName = async name => {
 	const locations = await Location.find({
@@ -49,13 +52,13 @@ const getUserNameAndBalanceString = async item => {
 	return displayBalance(item.item, slackName);
 };
 
-const priceToDollars = priceInCents => {
-	const divided = priceInCents / 100;
-	const converted = divided.toLocaleString('en-AU', {
+const priceToDollars = (priceInCents: number): string => {
+	const divided: number = priceInCents / 100;
+	const converted: string = divided.toLocaleString('en-AU', {
 		style: 'currency',
 		currency: 'AUD',
 	});
-	const match = converted.match(/A(.*)/);
+	const match: string[] | null = converted.match(/A(.*)/);
 	if (!match) return converted;
 	return match[1];
 };

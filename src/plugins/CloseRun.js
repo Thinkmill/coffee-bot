@@ -26,7 +26,7 @@ class CloseRun extends Plugin {
 		await run.save();
 		const items = await OrderItem.model
 			.find({ run: run.id })
-			.populate('item user');
+			.populate('item orderingUser');
 		const orders = await Promise.all(items.map(getUserNameAndBalanceString));
 		return closeTemplate(run.location.name, orders);
 	}

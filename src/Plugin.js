@@ -1,9 +1,17 @@
 const slack = require('slack');
-const token = process.env.SLACK_TOKEN;
+const token: string = process.env.SLACK_TOKEN;
 const { priceToDollars } = require('./utils');
 
+type A = {
+	text: string,
+	user: string,
+	channel: string,
+};
+
 class Plugin {
-	constructor({ text, user, channel }) {
+	text: string;
+	testRegex: RegExp | undefined;
+	constructor({ text, user, channel }: A) {
 		this.text = text;
 		this.userId = user;
 		this.channelId = channel;
@@ -11,27 +19,31 @@ class Plugin {
 		this.name = 'The Unnamed Command';
 	}
 
-	test() {
+	test(): boolean {
 		if (!this.testRegex) return false;
 		return this.testRegex.test(this.text);
 	}
 
-	priceToDollars(priceInCents) {
+	priceToDollars(priceInCents: number): string {
 		return priceToDollars(priceInCents);
 	}
 
-	action() {
+	action(): string {
 		return 'This action has not been defined';
+	}
+
+	response(returnMessage: string) {
+		slack.chat.postMessage(
+			{ text: returnMessage, channel: this.channelId, token },
+			console.log
+		);
 	}
 
 	async run() {
 		if (this.test()) {
-			const returnMessage = await this.action();
+			const returnMessage: string = await this.action();
 			if (returnMessage) {
-				slack.chat.postMessage(
-					{ text: returnMessage, channel: this.channelId, token },
-					console.log
-				);
+				this.response(returnMessage);
 			}
 		}
 	}
