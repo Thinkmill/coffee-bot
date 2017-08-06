@@ -2,10 +2,10 @@
 const keystone = require('keystone');
 const User = keystone.list('User');
 const OrderItem = keystone.list('OrderItem');
-const Plugin = require('../Plugin');
-const { getUserNameFromSlack } = require('../utils');
+const { Command } = require('slack-bot-commands');
+const { getUserNameFromSlack, priceToDollars } = require('../utils');
 
-class ShowBalance extends Plugin {
+class ShowBalance extends Command {
 	constructor(message) {
 		super(message);
 		this.testRegex = /^show balance/;
@@ -44,9 +44,7 @@ class ShowBalance extends Plugin {
 			const userName = await getUserNameFromSlack(slackId);
 			if (total1[slackId] > 0)
 				return acc.concat(
-					`\nYou owe ${userName} ${this.priceToDollars(
-						Math.abs(total1.slackId)
-					)}`
+					`\nYou owe ${userName} ${priceToDollars(Math.abs(total1.slackId))}`
 				);
 		}, '');
 
@@ -55,9 +53,7 @@ class ShowBalance extends Plugin {
 			const userName = await getUserNameFromSlack(slackId);
 			if (total1[slackId] < 0) {
 				return acc.concat(
-					`\n${userName} owes you ${this.priceToDollars(
-						Math.abs(total1[slackId])
-					)}`
+					`\n${userName} owes you ${priceToDollars(Math.abs(total1[slackId]))}`
 				);
 			}
 		}, '');

@@ -1,16 +1,16 @@
 const keystone = require('keystone');
 const OrderItem = keystone.list('OrderItem');
 const Run = keystone.list('Run');
-const Plugin = require('../Plugin');
-const { getUserNameAndBalanceString } = '../utils';
+const { Command } = require('slack-bot-commands');
 
+const { getUserNameAndBalanceString } = require('../utils');
 const currentOrder = (
 	locationName,
 	orders
-) => `run closed for ${locationName}. Orders were:
+) => `There is a run for ${locationName}. Currently ordered:
 ${orders.join('\n')}`;
 
-class CloseRun extends Plugin {
+class CloseRun extends Command {
 	constructor(message) {
 		super(message);
 		this.testRegex = /^show orders/i;
@@ -24,7 +24,8 @@ class CloseRun extends Plugin {
 		if (!run) return 'There is no run. Maybe you should start one?';
 		const items = await OrderItem.model
 			.find({ run: run.id })
-			.populate('item user');
+			.populate('item orderingUser');
+		if (!items.length) return 'Nothing ordered in this run yet.';
 		const orders = await Promise.all(items.map(getUserNameAndBalanceString));
 		return currentOrder(run.location.name, orders);
 	}

@@ -1,7 +1,7 @@
 const keystone = require('keystone');
 const OrderItem = keystone.list('OrderItem');
 const Run = keystone.list('Run');
-const Plugin = require('../Plugin');
+const { Command } = require('slack-bot-commands');
 const { getUserNameAndBalanceString } = require('../utils');
 
 const closeTemplate = (
@@ -10,7 +10,7 @@ const closeTemplate = (
 ) => `run closed for ${locationName}. Orders were:
 ${orders.join('\n')}`;
 
-class CloseRun extends Plugin {
+class CloseRun extends Command {
 	constructor(message) {
 		super(message);
 		this.testRegex = /^close run/i;

@@ -1,10 +1,10 @@
 // coffee some strings
 const keystone = require('keystone');
 const Run = keystone.list('Run');
-const Plugin = require('../Plugin');
+const { Command } = require('slack-bot-commands');
 const { orderAnItem, createItem } = require('../utils');
 
-class OrderAnItem extends Plugin {
+class OrderAnItem extends Command {
 	constructor(message) {
 		super(message);
 		this.testRegex = /^add ((.*) for \$(\d+\.\d\d))?/i;

@@ -1,13 +1,12 @@
 const keystone = require('keystone');
 const Location = keystone.list('Location');
-const Plugin = require('../Plugin');
+const { Command } = require('slack-bot-commands');
 
-class AddNewLocation extends Plugin {
+class AddNewLocation extends Command {
 	constructor(message) {
 		super(message);
 		this.testRegex = /^new place:? (.*)/i;
 		this.name = 'Add New Location';
-		console.log(message.text.match(this.testRegex));
 	}
 
 	async action() {

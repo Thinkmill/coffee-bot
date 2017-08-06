@@ -16,14 +16,7 @@ keystone.import('models');
 keystone.set('routes', require('./routes'));
 
 keystone.start(err => {
-	const plugins = [
-		require('./plugins/OrderAnItem'),
-		require('./plugins/AddNewLocation'),
-		require('./plugins/BeginRun'),
-		require('./plugins/CloseRun'),
-		require('./plugins/ShowBalance'),
-		// require('./plugins/DisplayCurrentRun'),
-	];
+	const plugins = require('./plugins');
 	const Help = require('./plugins/Help');
 
 	const manRunPlugin = async (text, basePlugin, plugins) => {
