@@ -40,7 +40,7 @@ class ShowBalance extends Plugin {
 
 		const allRelevantUsers = Object.keys(total1);
 		const youOwe = await allRelevantUsers.reduce(async (acc, slackId) => {
-			if (total1[slackId] < 0) return;
+			if (total1[slackId] < 0) return '';
 			const userName = await getUserNameFromSlack(slackId);
 			if (total1[slackId] > 0)
 				return acc.concat(
@@ -51,14 +51,15 @@ class ShowBalance extends Plugin {
 		}, '');
 
 		const youAreOwed = await allRelevantUsers.reduce(async (acc, slackId) => {
-			if (total1[slackId] > 0) return;
+			if (total1[slackId] > 0) return '';
 			const userName = await getUserNameFromSlack(slackId);
-			if (total1[slackId] < 0)
+			if (total1[slackId] < 0) {
 				return acc.concat(
 					`\n${userName} owes you ${this.priceToDollars(
-						Math.abs(total1.slackId)
+						Math.abs(total1[slackId])
 					)}`
 				);
+			}
 		}, '');
 		return `Your checks and balances:${youOwe}${youAreOwed}`;
 	}

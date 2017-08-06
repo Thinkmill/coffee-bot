@@ -35,6 +35,7 @@ class Plugin {
 	response(returnMessage: string) {
 		slack.chat.postMessage(
 			{ text: returnMessage, channel: this.channelId, token },
+			// postMessage requires a callback
 			console.log
 		);
 	}

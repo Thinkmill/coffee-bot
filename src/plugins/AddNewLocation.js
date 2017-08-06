@@ -7,6 +7,7 @@ class AddNewLocation extends Plugin {
 		super(message);
 		this.testRegex = /^new place:? (.*)/i;
 		this.name = 'Add New Location';
+		console.log(message.text.match(this.testRegex));
 	}
 
 	async action() {
